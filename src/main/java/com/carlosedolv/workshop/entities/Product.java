@@ -1,41 +1,44 @@
 package com.carlosedolv.workshop.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_user")
-public class User implements Serializable {
+@Table(name = "tb_product")
+public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private String email;
-	private String phone;
-	private String password;
+	private String description;
+	private Double price;
+	private String imageUrl;
 
-	private List<Order> orders = new ArrayList<>();
+	@ManyToOne
+	@JoinColumn(name = "tb_category")
+	private Category category;
 
-	public User() {
+	public Product() {
 	}
 
-	public User(Long id, String name, String email, String phone, String password) {
+	public Product(Long id, String name, String description, Double price, String imageUrl, Category category) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.email = email;
-		this.phone = phone;
-		this.password = password;
+		this.description = description;
+		this.price = price;
+		this.imageUrl = imageUrl;
+		this.category = category;
 	}
 
 	public Long getId() {
@@ -54,32 +57,32 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String getPhone() {
-		return phone;
+	public Double getPrice() {
+		return price;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getImageUrl() {
+		return imageUrl;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
-	public List<Order> getOrders() {
-		return orders;
+	public Category getCategory() {
+		return category;
 	}
 
 	@Override
@@ -95,7 +98,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Product other = (Product) obj;
 		return Objects.equals(id, other.id);
 	}
 
