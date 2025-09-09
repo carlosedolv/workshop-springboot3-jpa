@@ -1,14 +1,17 @@
 package com.carlosedolv.workshop.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,8 +23,10 @@ public class Category implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	
-	private List<Product> products = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(name = "tb_category_product", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+	private Set<Product> products = new HashSet<>();
 
 	public Category() {
 	}
@@ -48,7 +53,7 @@ public class Category implements Serializable {
 		this.name = name;
 	}
 
-	public List<Product> getProducts() {
+	public Set<Product> getProducts() {
 		return this.products;
 	}
 

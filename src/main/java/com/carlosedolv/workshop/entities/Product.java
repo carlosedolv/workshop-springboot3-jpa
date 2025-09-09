@@ -1,14 +1,17 @@
 package com.carlosedolv.workshop.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,21 +27,20 @@ public class Product implements Serializable {
 	private Double price;
 	private String imageUrl;
 
-	@ManyToOne
-	@JoinColumn(name = "tb_category")
-	private Category category;
+	@JsonIgnore
+	@ManyToMany(mappedBy = "products")
+	private Set<Category> categories = new HashSet<>();
 
 	public Product() {
 	}
 
-	public Product(Long id, String name, String description, Double price, String imageUrl, Category category) {
+	public Product(Long id, String name, String description, Double price, String imageUrl) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.imageUrl = imageUrl;
-		this.category = category;
 	}
 
 	public Long getId() {
@@ -81,8 +83,8 @@ public class Product implements Serializable {
 		this.imageUrl = imageUrl;
 	}
 
-	public Category getCategory() {
-		return category;
+	public Set<Category> getCategories() {
+		return categories;
 	}
 
 	@Override
